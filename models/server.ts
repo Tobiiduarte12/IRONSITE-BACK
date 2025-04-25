@@ -1,9 +1,7 @@
 import express, { Express } from "express";
-// import authRoutes from "../routes/auth";
-// import { dbConnection } from "../dataBase/config";
-// import orderRoutes from "../routes/orders";
-// import issuesRoutes from "../routes/issues";
 import cors from "cors";
+import { conectarDB } from "../data/config";
+import userRoutes from "../routes/users";
 
 export class Server {
   app: Express;
@@ -19,14 +17,14 @@ export class Server {
     this.orderPath = "/orders";
     this.issuesPath = "/issues";
 
-    // this.conectarDB();
+    this.conectTheDB();
     this.middlewares();
     this.routes();
   }
 
-  //   async conectarDB(): Promise<void> {
-  //     await dbConnection();
-  //   }
+  async conectTheDB(): Promise<void> {
+    await conectarDB();
+  }
 
   middlewares(): void {
     this.app.use(express.json());
@@ -34,14 +32,12 @@ export class Server {
   }
 
   routes(): void {
-    // this.app.use(this.authPath, authRoutes);
-    // this.app.use(this.orderPath, orderRoutes);
-    // this.app.use(this.issuesPath, issuesRoutes);
+    this.app.use("/users", userRoutes);
   }
 
   listen(): void {
-    this.app.listen(this.port, () => {
-      console.log(`El servidor está corriendo en el puerto ${this.port}`);
+    this.app.listen(8080, () => {
+      console.log(`El servidor está corriendo en el puerto 8080`);
     });
   }
 }
