@@ -39,6 +39,10 @@ const UserSchema = new Schema<IUser>(
       role: ["USER", "ADMIN"],
       default: "USER",
     },
+    experience: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

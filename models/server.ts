@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import cors from "cors";
 import { conectarDB } from "../data/config";
 import userRoutes from "../routes/users";
+import ExperienceRoutes from "../routes/experience";
 
 export class Server {
   app: Express;
@@ -33,6 +34,7 @@ export class Server {
 
   routes(): void {
     this.app.use("/users", userRoutes);
+    this.app.use("/experience", ExperienceRoutes);
   }
 
   listen(): void {
