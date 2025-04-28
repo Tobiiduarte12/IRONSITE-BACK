@@ -1,17 +1,36 @@
 import { Request, Response } from "express";
 import User, { IUser } from "../models/user";
+import Camada from "../models/camadas";
 
 export const createUser = async (req: Request, res: Response) => {
-  const userData: IUser = req.body;
+  try {
+    const { name, username, email, cellphoneNumber, camada } = req.body;
+    console.log(req.body);
 
-  const user = new User(userData);
+    const camadaData = await Camada.findOne({ name: camada });
 
-  await user.save();
+    const user = new User({
+      username,
+      name,
+      email,
+      cellphoneNumber,
+      camada: camadaData?._id,
+    });
 
-  res.json({
-    msg: "Usuario creado",
-    user,
-  });
+    await user.save();
+
+    res.json({
+      msg: "Usuario creado",
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      msg: "Error al crear usuario",
+      error,
+    });
+  }
 };
 
 export const getUsers = async (req: Request, res: Response) => {
@@ -19,7 +38,7 @@ export const getUsers = async (req: Request, res: Response) => {
     role: "USER",
   };
 
-  const users = await User.find(condicion);
+  const users = await User.find(condicion).populate("camada", "name");
 
   res.json({
     users,
@@ -27,9 +46,11 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 
 export const getUserByUsuario = async (req: Request, res: Response) => {
-  const { usuario } = req.params;
+  const { username } = req.params;
 
-  const user: IUser | null = await User.findOne({ usuario: usuario });
+  const user: IUser | null = await User.findOne({
+    username: username,
+  }).populate("camada", "name");
 
   res.json({
     user,

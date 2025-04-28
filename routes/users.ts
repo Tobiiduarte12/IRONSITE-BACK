@@ -11,13 +11,13 @@ const router = Router();
 
 router.get("/", getUsers);
 router.get("/admins", getAdmins);
-router.get("/:usuario", getUserByUsuario); // Assuming you want to use the same controller for admin users
+router.get("/:username", getUserByUsuario); // Assuming you want to use the same controller for admin users
 
 router.post("/", createUser);
 
-router.patch("/:usuario", updateUser);
-router.put("/:usuario", updateUser);
+router.patch("/:username", updateUser);
+router.put("/:username", updateUser);
 
-router.delete("/:usuario", deleteUser);
+router.delete("/:username", deleteUser);
 
 export default router;

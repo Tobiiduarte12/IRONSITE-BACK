@@ -1,14 +1,13 @@
-import { model, Model, Schema } from "mongoose";
+import { model, Model, ObjectId, Schema } from "mongoose";
 
 export interface IUser {
-  id: string;
   name: string;
-  usuario: string;
+  username: string;
   email: string;
-  password: string;
+  camada: ObjectId;
   role: string;
-  experience: string;
-  level: number;
+  level: string;
+  cellphoneNumber: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,7 +18,7 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
-    usuario: {
+    username: {
       type: String,
       required: true,
       unique: true,
@@ -29,19 +28,21 @@ const UserSchema = new Schema<IUser>(
       required: true,
       unique: true,
     },
-    password: {
-      type: String,
+    camada: {
+      type: Schema.Types.ObjectId,
+      ref: "Camada",
       required: true,
+    },
+    cellphoneNumber: {
+      type: Number,
+      required: true,
+      unique: true,
     },
     role: {
       type: String,
       required: true,
-      role: ["USER", "ADMIN"],
+      enum: ["USER", "ADMIN"],
       default: "USER",
-    },
-    experience: {
-      type: String,
-      required: true,
     },
   },
   { timestamps: true }
